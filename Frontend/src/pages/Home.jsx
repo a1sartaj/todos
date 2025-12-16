@@ -1,44 +1,11 @@
-import { useEffect, useState } from "react"
+import { useContext } from "react"
+import { TodoContext } from "../context/TodoContext"
+
 
 
 const Home = () => {
 
-    const [todos, setTodos] = useState(localStorage.getItem("todos") ? JSON.parse(localStorage.getItem("todos")) : [])
-    const [input, setInput] = useState("")
-
-    // Handle Add Todo
-    const handleAddTodo = () => {
-
-        console.log("Add Todo Clicked");
-
-        if (input.trim() === "") return;
-
-        const newTodo = {
-            text: input,
-            completed: false
-        }
-
-        setTodos([...todos, newTodo])
-        setInput("")
-
-        localStorage.setItem("todos", JSON.stringify([...todos, newTodo]))
-    }
-
-    // Handle Delte Todo
-    const handleDeleteTodo = (index) => {
-        const newTodos = todos.filter((todo, i) => i !== index)
-        setTodos(newTodos)
-        localStorage.setItem("todos", JSON.stringify(newTodos))
-    }
-
-    // Handle Input Change
-    const handleInputChange = (e) => {
-        setInput(e.target.value)
-    }
-
-    useEffect(() => {
-        console.log(input);
-    }, [input])
+    const { todos, input, handleAddTodo, handleDeleteTodo, handleInputChange } = useContext(TodoContext)
 
     return (
         <div className="w-full max-w-md px-2 md:px-0">
@@ -48,11 +15,23 @@ const Home = () => {
             {/* Todo Content */}
             <div className="bg-[#ED985F] rounded-lg w-full  h-[600px] border border-green-600 p-2">
 
-                {/* Search Bar */}
-                <div className="bg-[#F7B980] w-full border rounded-lg py-1 px-1 flex  " >
-                    <input onChange={handleInputChange} className="flex-1 outline-none " type="text"
+                <div className="bg-[#F7B980] w-full border rounded-lg py-1 px-1 flex flex-col gap-4 " >
+
+                    {/* Search Bar */}
+                    <input onChange={handleInputChange} className="px-2 flex-1 outline-none border font-medium rounded-lg bg-white" type="text"
                         value={input}
                         placeholder="Add Todos..." />
+
+                    {/* description Box */}
+                    <textarea className=" border px-2 rounded-lg bg-white font-medium" placeholder="Description" >
+
+                    </textarea>
+
+                    {/* Date and Time selection for deadline */}
+                    <div>
+                        <input className="bg-white text-black font-medium px-2  rounded-lg" type="date" />
+                    </div>
+
                     <button onClick={handleAddTodo} className="bg-[#001F3D] text-[#E6E6E6] font-medium py-1 px-2 rounded-lg" >Add Todos</button>
                 </div>
 
