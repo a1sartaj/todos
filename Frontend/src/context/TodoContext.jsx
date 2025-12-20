@@ -10,22 +10,27 @@ export const TodoProvider = ({ children }) => {
 
 
     const [todos, setTodos] = useState(localStorage.getItem("todos") ? JSON.parse(localStorage.getItem("todos")) : [])
-    const [input, setInput] = useState("")
+    const [todoInput, setTodoInput] = useState({
+        title: "",
+        description: "",
+        date: "",
+    })
 
     // Handle Add Todo
     const handleAddTodo = () => {
 
         console.log("Add Todo Clicked");
 
-        if (input.trim() === "") return;
+        if (todoInput.title.trim() === "") return;
 
         const newTodo = {
-            text: input,
-            completed: false
+            title: todoInput.title,
+            description: todoInput.description,
+            date: todoInput.date,
         }
 
         setTodos([...todos, newTodo])
-        setInput("")
+        setTodoInput({ title: "", description: "", date: "" })
 
         localStorage.setItem("todos", JSON.stringify([...todos, newTodo]))
     }
@@ -39,17 +44,18 @@ export const TodoProvider = ({ children }) => {
 
     // Handle Input Change
     const handleInputChange = (e) => {
-        setInput(e.target.value)
+        const { name, value } = e.target;
+        setTodoInput({ ...todoInput, [name]: value })
     }
 
-    useEffect(() => {
-        console.log(input);
-    }, [input])
+    useEffect(() => {       
+        console.log(todos);
+    }, [todos])
 
 
     const value = {
         todos, setTodos,
-        input, setInput,
+        todoInput, setTodoInput,
         handleAddTodo,
         handleDeleteTodo,
         handleInputChange,

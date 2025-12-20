@@ -5,7 +5,7 @@ import { TodoContext } from "../context/TodoContext"
 
 const Home = () => {
 
-    const { todos, input, handleAddTodo, handleDeleteTodo, handleInputChange } = useContext(TodoContext)
+    const { todos, todoInput, handleAddTodo, handleDeleteTodo, handleInputChange } = useContext(TodoContext)
 
     return (
         <div className="w-full max-w-md px-2 md:px-0">
@@ -19,17 +19,17 @@ const Home = () => {
 
                     {/* Search Bar */}
                     <input onChange={handleInputChange} className="px-2 flex-1 outline-none border font-medium rounded-lg bg-white" type="text"
-                        value={input}
-                        placeholder="Add Todos..." />
+                        value={todoInput.title} name='title'
+                        placeholder="Add Title..." />
 
                     {/* description Box */}
-                    <textarea className=" border px-2 rounded-lg bg-white font-medium" placeholder="Description" >
+                    <textarea onChange={handleInputChange} className=" border px-2 rounded-lg bg-white font-medium" placeholder="Description" name='description' value={todoInput.description}>
 
                     </textarea>
 
                     {/* Date and Time selection for deadline */}
                     <div>
-                        <input className="bg-white text-black font-medium px-2  rounded-lg" type="date" />
+                        <input onChange={handleInputChange} className="bg-white text-black font-medium px-2  rounded-lg" type="date" name='date' value={todoInput.date} />
                     </div>
 
                     <button onClick={handleAddTodo} className="bg-[#001F3D] text-[#E6E6E6] font-medium py-1 px-2 rounded-lg" >Add Todos</button>
@@ -42,9 +42,9 @@ const Home = () => {
                         todos.length === 0 ? (
                             <p>No Todos</p>
                         ) : (
-                            todos.map((todo, index) => (
+                            todos.sort((a, b) => new Date(a.date) - new Date(b.date)).map((todo, index) => (
                                 <div key={index} className="bg-[#F7B980] flex py-1 px-2 rounded-lg " >
-                                    <p className="flex-1 font-medium text-lg" >{todo.text}</p>
+                                    <p className="flex-1 font-medium text-lg" >{todo.title}</p>
                                     <button onClick={() => handleDeleteTodo(index)} className="bg-[#001F3D] text-[#E6E6E6] font-medium py-1 px-2 rounded-lg" >Delete</button>
                                 </div>
                             ))
