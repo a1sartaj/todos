@@ -10,6 +10,8 @@ export const TodoProvider = ({ children }) => {
 
 
     const [todos, setTodos] = useState(localStorage.getItem("todos") ? JSON.parse(localStorage.getItem("todos")) : [])
+    const [todoView, setTodoView] = useState(null)
+    const [todoViewActive, setTodoViewActive] = useState(false)
     const [todoInput, setTodoInput] = useState({
         title: "",
         description: "",
@@ -56,6 +58,8 @@ export const TodoProvider = ({ children }) => {
     const value = {
         todos, setTodos,
         todoInput, setTodoInput,
+        todoView, setTodoView,
+        todoViewActive, setTodoViewActive,
         handleAddTodo,
         handleDeleteTodo,
         handleInputChange,
