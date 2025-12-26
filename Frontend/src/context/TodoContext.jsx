@@ -19,13 +19,13 @@ export const TodoProvider = ({ children }) => {
     })
 
     // Handle Add Todo
-    const handleAddTodo = () => {
-
-        console.log("Add Todo Clicked");
+    const handleAddTodo = (e) => {
+        e.preventDefault();
 
         if (todoInput.title.trim() === "") return;
 
         const newTodo = {
+            _id: Date.now(),
             title: todoInput.title,
             description: todoInput.description,
             date: todoInput.date,
@@ -49,10 +49,6 @@ export const TodoProvider = ({ children }) => {
         const { name, value } = e.target;
         setTodoInput({ ...todoInput, [name]: value })
     }
-
-    useEffect(() => {       
-        console.log(todos);
-    }, [todos])
 
 
     const value = {
