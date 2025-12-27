@@ -2,7 +2,7 @@ import { useContext } from "react"
 import { TodoContext } from "../context/TodoContext"
 import { FaCirclePlus } from "react-icons/fa6";
 import { useNavigate } from 'react-router-dom'
-
+import { RiDeleteBin6Line } from "react-icons/ri";
 
 
 
@@ -25,10 +25,10 @@ const Home = () => {
                             <p className="flex items-center justify-center w-full h-full " >No Todos</p>
                         ) : (
                             todos.sort((a, b) => new Date(a.date) - new Date(b.date)).map((todo, index) => (
-                                <div key={index} className=" flex items-center  pl-2 bg-[#F7B980] rounded-lg hover:shadow cursor-pointer"  >
+                                <div key={index} className={`flex items-center  pl-2 bg-[#F7B980] rounded-lg hover:shadow cursor-pointer ${todo.isCompleted ? 'opacity-50' : ''}`}  >
                                     <p className="flex-1 py-1 font-medium text-lg  " onClick={() => navigate(`/view-todo/${todo._id}`)} >{todo.title}</p>
-                                    <button className=" m-1 py-1 px-2 text-[#E6E6E6] font-medium bg-[#001F3D] rounded-lg transition-all ease-in shadow-white  hover:bg-white hover:text-black hover:shadow-[0_0_10px]  cursor-pointer"
-                                        onClick={() => handleDeleteTodo(index)} >Delete</button>
+                                    <button className="flex items-center justify-center gap-1 m-1 py-1 px-2 text-[#E6E6E6] font-medium bg-red-500 rounded-lg transition-all ease-in shadow-white  hover:bg-white hover:text-black hover:shadow-[0_0_10px]  cursor-pointer"
+                                        onClick={() => handleDeleteTodo(index)} > <RiDeleteBin6Line /> Delete</button>
                                 </div>
                             ))
                         )

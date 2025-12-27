@@ -29,6 +29,7 @@ export const TodoProvider = ({ children }) => {
             title: todoInput.title,
             description: todoInput.description,
             date: todoInput.date,
+            isCompleted: false,
         }
 
         setTodos([...todos, newTodo])
@@ -49,6 +50,11 @@ export const TodoProvider = ({ children }) => {
         const { name, value } = e.target;
         setTodoInput({ ...todoInput, [name]: value })
     }
+
+    // Task Completed Toggle Effect
+    useEffect(() => {
+        localStorage.setItem("todos", JSON.stringify(todos))
+    }, [todos])
 
 
     const value = {
