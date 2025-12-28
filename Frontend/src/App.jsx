@@ -3,6 +3,7 @@ import Home from './pages/Home'
 import { Routes, Route } from 'react-router-dom'
 import AddTodo from './pages/AddTodo'
 import ViewTodo from './pages/ViewTodo'
+import EditTodo from './pages/EditTodo'
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
         <Route path='/' element={<Home />} />
         <Route path='/add-todo' element={<AddTodo />} />
         <Route path='/view-todo/:id' element={<ViewTodo />} />
+        <Route path='/edit-todo/:id' element={<EditTodo />} />
 
       </Routes>
 

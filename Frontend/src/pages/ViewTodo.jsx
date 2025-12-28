@@ -12,7 +12,7 @@ const ViewTodo = () => {
 
     const todoId = useParams().id;
     const navigate = useNavigate();
-    const { todos, setTodos } = useContext(TodoContext)
+    const { todos, setTodos, handleDeleteTodo } = useContext(TodoContext)
     const [todo, setTodo] =
         useState({});
     const fetchedTodo = () => {
@@ -28,6 +28,11 @@ const ViewTodo = () => {
             return t;
         })
         setTodos(updateTodos);
+    }
+
+    // it will navigate to edit todo page
+    const handleEditTodo = (id) => {
+        navigate(`/edit-todo/${id}`);
     }
 
     useEffect(() => {
@@ -66,9 +71,16 @@ const ViewTodo = () => {
                     <p className='pl-2 text-sm text-gray-400'>Deadline : {todo.date}</p>
 
                     <div className='flex items-center justify-between pt-2 mt-2 border-t border-gray-500  ' >
-                        <button className="flex items-center justify-center gap-2 w-full m-1 py-1 px-2 text-[#E6E6E6] font-medium bg-blue-400 rounded-lg transition-all ease-in shadow-white  hover:bg-white hover:text-black hover:shadow-[0_0_10px]  cursor-pointer" > <FaEdit />  Edit</button>
+                        <button
+                            className="flex items-center justify-center gap-2 w-full m-1 py-1 px-2 text-[#E6E6E6] font-medium bg-blue-400 rounded-lg transition-all ease-in shadow-white  hover:bg-white hover:text-black hover:shadow-[0_0_10px]  cursor-pointer"
+                            onClick={() => handleEditTodo(todo._id)}
+                        > <FaEdit />  Edit</button>
 
-                        <button className="flex items-center justify-center gap-2 w-full m-1 py-1 px-2 text-[#E6E6E6] font-medium bg-red-500 rounded-lg transition-all ease-in shadow-white  hover:bg-white hover:text-black hover:shadow-[0_0_10px]  cursor-pointer"> <RiDeleteBin6Line /> Delete</button>
+                        <button
+                            className="flex items-center justify-center gap-2 w-full m-1 py-1 px-2 text-[#E6E6E6] font-medium bg-red-500 rounded-lg transition-all ease-in shadow-white  hover:bg-white hover:text-black hover:shadow-[0_0_10px]  cursor-pointer"
+                            onClick={() => handleDeleteTodo(todo._id)}
+                        > <RiDeleteBin6Line /> Delete</button>
+
                     </div>
                 </div>
             </div>

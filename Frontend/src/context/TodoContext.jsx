@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 
 // Create Todo Context
@@ -8,6 +9,7 @@ export const TodoContext = createContext();
 // Todo Context Provider
 export const TodoProvider = ({ children }) => {
 
+    const navigate = useNavigate();
 
     const [todos, setTodos] = useState(localStorage.getItem("todos") ? JSON.parse(localStorage.getItem("todos")) : [])
     const [todoView, setTodoView] = useState(null)
@@ -16,7 +18,9 @@ export const TodoProvider = ({ children }) => {
         title: "",
         description: "",
         date: "",
-    })
+    }) // Input state for add and edit todo forms
+
+
 
     // Handle Add Todo
     const handleAddTodo = (e) => {
@@ -34,21 +38,31 @@ export const TodoProvider = ({ children }) => {
 
         setTodos([...todos, newTodo])
         setTodoInput({ title: "", description: "", date: "" })
+        console.log("Add Todo Called");
 
         localStorage.setItem("todos", JSON.stringify([...todos, newTodo]))
     }
 
     // Handle Delte Todo
-    const handleDeleteTodo = (index) => {
-        const newTodos = todos.filter((todo, i) => i !== index)
+    const handleDeleteTodo = (id) => {
+        console.log("Delete Todo Called");
+        const newTodos = todos.filter(todo => todo._id !== id)
         setTodos(newTodos)
         localStorage.setItem("todos", JSON.stringify(newTodos))
+        navigate(-1);
     }
 
     // Handle Input Change
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setTodoInput({ ...todoInput, [name]: value })
+    }
+
+    //  Handle Edit Todo
+    const handleEditTodo = (id) => {
+        const updatedTodos = todos.map(todo => todo._id.toString() === id.toString() ? { ...todo, title: todoInput.title, description: todoInput.description, date: todoInput.date } : todo)
+        setTodos(updatedTodos)
+        navigate(`/view-todo/${id}`);
     }
 
     // Task Completed Toggle Effect
@@ -65,6 +79,7 @@ export const TodoProvider = ({ children }) => {
         handleAddTodo,
         handleDeleteTodo,
         handleInputChange,
+        handleEditTodo,
     }
 
     return (

@@ -7,9 +7,9 @@ import { BrowserRouter } from 'react-router-dom'
 
 createRoot(document.getElementById('root')).render(
 
-  <TodoProvider>
-    <BrowserRouter>
+  <BrowserRouter>
+    <TodoProvider>
       <App />
-    </BrowserRouter>
-  </TodoProvider>
+    </TodoProvider>
+  </BrowserRouter>
 )
