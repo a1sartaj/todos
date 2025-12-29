@@ -5,6 +5,7 @@ import { IoMdArrowRoundBack } from "react-icons/io";
 import { useNavigate } from 'react-router-dom';
 import { FaEdit } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import ConfirmDelete from '../components/ConfirmDelete';
 
 
 
@@ -13,8 +14,10 @@ const ViewTodo = () => {
     const todoId = useParams().id;
     const navigate = useNavigate();
     const { todos, setTodos, handleDeleteTodo } = useContext(TodoContext)
-    const [todo, setTodo] =
-        useState({});
+    const [todo, setTodo] = useState({});
+    const [showConfirm, setShowConfirm] = useState(false);
+
+
     const fetchedTodo = () => {
         const foundTodo = todos.find(t => t._id.toString() === todoId.toString());
         setTodo(foundTodo);
@@ -48,6 +51,20 @@ const ViewTodo = () => {
                 <IoMdArrowRoundBack className="text-5xl text-[#ED985F] rounded-full  transition-all duration-300 ease-in   shadow-white bg-black  hover:bg-white hover:shadow-[0_0_20px] cursor-pointer " />
             </button>
 
+            {/* Confirm Before Delete */}
+            {/* <ConfirmDelete /> */}
+            {showConfirm && (
+                <ConfirmDelete
+                    onCancel={() => setShowConfirm(false)}
+                    onConfirm={() => {
+                        handleDeleteTodo(todo._id);
+                        setShowConfirm(false);
+                    }}
+                />
+            )}
+
+
+
             {/* Full Section */}
             <div className="flex items-center justify-center bg-[#ED985F] rounded-lg w-full  h-[600px]  p-2 " >
 
@@ -70,6 +87,7 @@ const ViewTodo = () => {
                     <p className='pl-2 mb-2 text-lg font-medium text-gray-700 leading-6' >{todo.description}</p>
                     <p className='pl-2 text-sm text-gray-400'>Deadline : {todo.date}</p>
 
+                    {/* Buttons Section */}
                     <div className='flex items-center justify-between pt-2 mt-2 border-t border-gray-500  ' >
                         <button
                             className="flex items-center justify-center gap-2 w-full m-1 py-1 px-2 text-[#E6E6E6] font-medium bg-blue-400 rounded-lg transition-all ease-in shadow-white  hover:bg-white hover:text-black hover:shadow-[0_0_10px]  cursor-pointer"
@@ -78,7 +96,7 @@ const ViewTodo = () => {
 
                         <button
                             className="flex items-center justify-center gap-2 w-full m-1 py-1 px-2 text-[#E6E6E6] font-medium bg-red-500 rounded-lg transition-all ease-in shadow-white  hover:bg-white hover:text-black hover:shadow-[0_0_10px]  cursor-pointer"
-                            onClick={() => handleDeleteTodo(todo._id)}
+                            onClick={() => setShowConfirm(true)}
                         > <RiDeleteBin6Line /> Delete</button>
 
                     </div>
