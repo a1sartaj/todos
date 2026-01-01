@@ -4,13 +4,14 @@ import { Routes, Route } from 'react-router-dom'
 import AddTodo from './pages/AddTodo'
 import ViewTodo from './pages/ViewTodo'
 import EditTodo from './pages/EditTodo'
+import Navbar from './components/Navbar'
 
 const App = () => {
   return (
-    <div className=' flex flex-col items-center justify-center min-h-screen' >
+    <div className='relative flex  flex-col items-center justify-end md:justify-center min-h-screen' >
 
-      {/* Heading Todo List */}
-      <h1 className="text-center text-2xl font-bold text-[#E6E6E6] py-4">Todo List</h1>
+      {/* Navbar */}
+      <Navbar />
 
       {/* Starts Routes */}
       <Routes>

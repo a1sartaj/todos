@@ -13,10 +13,10 @@ const Home = () => {
     const navigate = useNavigate();
 
     return (
-        <div className="relative w-full max-w-md px-2 md:px-0">
+        <div className="relative  w-full md:max-w-md rounded-none   ">
 
             {/* Todo Content */}
-            <div className="bg-[#ED985F] rounded-lg w-full  h-[600px]  p-2">
+            <div className="w-full  h-[calc(100vh-54px)] md:h-[600px]   p-2 bg-[#ED985F] md:rounded-lg ">
 
                 {/* Todos list */}
                 <div className=" flex  flex-col gap-4 mt-4 h-[520px] overflow-y-auto ">
