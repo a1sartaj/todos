@@ -8,7 +8,7 @@ import Navbar from './components/Navbar'
 
 const App = () => {
   return (
-    <div className='relative flex  flex-col items-center justify-end md:justify-center min-h-screen' >
+    <div className='relative flex  flex-col items-center  md:justify-center min-h-screen' >
 
       {/* Navbar */}
       <Navbar />
