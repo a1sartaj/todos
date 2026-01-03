@@ -13,7 +13,7 @@ const Navbar = () => {
     }
 
     return (
-        <div className='fixed z-10 top-0 left-0 right-0  w-full  bg-[#ED985F] drop-shadow-black/25 drop-shadow-[0px_2px_4px]'>
+        <div className='sticky z-10 top-0 left-0 right-0 bg-[#ED985F] drop-shadow-black/25 drop-shadow-[0px_2px_4px]'>
 
 
             {/* View Port 1440px  */}

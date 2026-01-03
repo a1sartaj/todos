@@ -8,20 +8,24 @@ import Navbar from './components/Navbar'
 
 const App = () => {
   return (
-    <div className='relative flex  flex-col items-center  md:justify-center min-h-screen' >
+    <div className='relative flex flex-col  w-full min-h-dvh' >
 
       {/* Navbar */}
-      <Navbar />
+      <header className='w-full' >
+        <Navbar />
+      </header>
 
       {/* Starts Routes */}
-      <Routes>
+      <main className='flex-1 w-full   max-w-3xl mx-auto bg-[#ED985F] overflow-y-auto'>
+        <Routes>
 
-        <Route path='/' element={<Home />} />
-        <Route path='/add-todo' element={<AddTodo />} />
-        <Route path='/view-todo/:id' element={<ViewTodo />} />
-        <Route path='/edit-todo/:id' element={<EditTodo />} />
+          <Route path='/' element={<Home />} />
+          <Route path='/add-todo' element={<AddTodo />} />
+          <Route path='/view-todo/:id' element={<ViewTodo />} />
+          <Route path='/edit-todo/:id' element={<EditTodo />} />
 
-      </Routes>
+        </Routes>
+      </main>
 
     </div >
   )

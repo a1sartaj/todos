@@ -1,8 +1,8 @@
 import { useContext } from "react"
 import { TodoContext } from "../context/TodoContext"
-import { FaCirclePlus } from "react-icons/fa6";
 import { Link, useNavigate } from 'react-router-dom'
 import { RiDeleteBin6Line } from "react-icons/ri";
+import PlusButton from "../components/PlusButton";
 
 
 
@@ -13,12 +13,9 @@ const Home = () => {
     const navigate = useNavigate();
 
     return (
-        <div className="relative  w-full  h-[calc(100vh-54px)] mt-[54px] md:mt-0  md:h-[600px] md:max-w-md rounded-none b ">
-
-
-
+        <>
             {/* Todos list */}
-            <div className=" flex  flex-col gap-4 p-2  h-full bg-[#ED985F]  overflow-y-auto ">
+            <div className=" flex flex-col gap-2 p-2   overflow-y-auto ">
                 {
                     todos.length === 0 ? (
                         <Link
@@ -27,9 +24,16 @@ const Home = () => {
                         >No todos yet. Click + to add one.</Link>
                     ) : (
                         todos.sort((a, b) => new Date(a.date) - new Date(b.date)).map((todo, index) => (
-                            <div key={index} className={`flex items-center  pl-2 bg-[#F7B980] rounded-lg hover:shadow cursor-pointer ${todo.isCompleted ? 'opacity-50' : ''}`}  >
-                                <p className="flex-1 py-1 font-medium text-lg  " onClick={() => navigate(`/view-todo/${todo._id}`)} >{todo.title}</p>
-                                <button className="flex items-center justify-center gap-1 m-1 py-1 px-2 text-[#E6E6E6] font-medium bg-red-500 rounded-lg transition-all ease-in shadow-white  hover:bg-white hover:text-black hover:shadow-[0_0_10px]  cursor-pointer"
+                            <div key={index} className={`flex items-center p-2.5 pl-6  bg-[#F7B980] rounded-lg transition-all duration-300 ease-in hover:shadow hover:scale-[99%] cursor-pointer ${todo.isCompleted ? 'opacity-50' : ''}`}  >
+
+                                <div className="flex flex-col flex-1  " onClick={() => navigate(`/view-todo/${todo._id}`)}  >
+                                    <h3 className="text-lg  " >{todo.title}</h3>
+
+                                    <p className="text-[#9C9696] text-[12px]" >Due : {todo.dueDate}</p>
+                                </div>
+
+                                {/* Delete Button */}
+                                <button className="flex items-center justify-center gap-1 px-6 py-2 text-[#E6E6E6] text-lg bg-red-500 rounded-lg transition-all ease-in shadow-white  hover:bg-white hover:text-black hover:shadow-[0_0_10px]  cursor-pointer"
                                     onClick={() => handleDeleteTodo(todo._id)} > <RiDeleteBin6Line /> Delete</button>
                             </div>
                         ))
@@ -38,11 +42,9 @@ const Home = () => {
             </div>
 
 
-            {/* Add Todo Button */}
-            <button className="fixed bottom-4 right-4 flex items-center justify-center  " onClick={() => navigate('/add-todo')} >
-                <FaCirclePlus className="text-5xl rounded-full  transition-all duration-300 ease-in   shadow-white hover:text-white hover:shadow-[0_0_20px] cursor-pointer " />
-            </button>
-        </div>
+            {/* Plus button for add todos */}
+            <PlusButton />
+        </>
 
     )
 }
