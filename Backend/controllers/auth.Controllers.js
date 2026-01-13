@@ -1,6 +1,7 @@
 import { transporter } from "../config/mail.js";
 import UserModel from "../models/user.Model.js";
 import { generateToken } from "../utils/generateToken.js";
+import { sendOTPEmail } from "../utils/sendEmail.js";
 
 
 
@@ -27,12 +28,15 @@ export const createUser = async (req, res) => {
 
         // 🔹 SEND EMAIL FIRST
         try {
-            await transporter.sendMail({
-                from: `"Todo App" <no-reply@a1sartaj.in>`,
-                to: email,
-                subject: "Your OTP Code",
-                text: `Your OTP code is ${OTP}. It is valid for 10 minutes.`,
-            });
+            // await transporter.sendMail({
+
+            //     from: `"Todo App" <no-reply@a1sartaj.in>`,
+            //     to: email,
+            //     subject: "Your OTP Code",
+            //     text: `Your OTP code is ${OTP}. It is valid for 10 minutes.`,
+            // });
+
+            await sendOTPEmail(email, OTP)
 
             console.log("OTP email sent to:", email);
         } catch (emailError) {
@@ -142,12 +146,14 @@ export const resendOTP = async (req, res) => {
 
         await user.save();
 
-        await transporter.sendMail({
-            from: `"Todo App" <no-reply@a1sartaj.in>`,
-            to: email,
-            subject: "Your New OTP Code",
-            text: `Your new OTP code is ${OTP}. It is valid for 10 minutes.`
-        })
+        // await transporter.sendMail({
+        //     from: `"Todo App" <no-reply@a1sartaj.in>`,
+        //     to: email,
+        //     subject: "Your New OTP Code",
+        //     text: `Your new OTP code is ${OTP}. It is valid for 10 minutes.`
+        // })
+
+        await sendOTPEmail(email, OTP)
 
         return res.status(200).json({ success: true, message: "OTP resent successfully" });
     } catch (error) {
