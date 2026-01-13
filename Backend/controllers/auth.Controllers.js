@@ -6,64 +6,64 @@ import { generateToken } from "../utils/generateToken.js";
 
 // Create New User Controller
 export const createUser = async (req, res) => {
-  const { name, email, password } = req.body;
+    const { name, email, password } = req.body;
 
-  if (!name || !email || !password) {
-    return res.status(400).json({ success: false, message: "All fields are required" });
-  }
-
-  if (!email.includes("@")) {
-    return res.status(400).json({ success: false, message: "Invalid email address" });
-  }
-
-  try {
-    const existingUser = await UserModel.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({ success: false, message: "User with this email already exists" });
+    if (!name || !email || !password) {
+        return res.status(400).json({ success: false, message: "All fields are required" });
     }
 
-    // Generate OTP
-    const OTP = Math.floor(100000 + Math.random() * 900000);
+    if (!email.includes("@")) {
+        return res.status(400).json({ success: false, message: "Invalid email address" });
+    }
 
-    // 🔹 SEND EMAIL FIRST
     try {
-      await transporter.sendMail({
-        from: process.env.EMAIL_USER,
-        to: email,
-        subject: "Your OTP Code",
-        text: `Your OTP code is ${OTP}. It is valid for 10 minutes.`,
-      });
+        const existingUser = await UserModel.findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({ success: false, message: "User with this email already exists" });
+        }
 
-      console.log("OTP email sent to:", email);
-    } catch (emailError) {
-      console.error("Email sending failed:", emailError);
-      return res.status(500).json({
-        success: false,
-        message: "Failed to send OTP. Please try again later.",
-      });
+        // Generate OTP
+        const OTP = Math.floor(100000 + Math.random() * 900000);
+
+        // 🔹 SEND EMAIL FIRST
+        try {
+            await transporter.sendMail({
+                from: `"Todo App" <no-reply@a1sartaj.in>`,
+                to: email,
+                subject: "Your OTP Code",
+                text: `Your OTP code is ${OTP}. It is valid for 10 minutes.`,
+            });
+
+            console.log("OTP email sent to:", email);
+        } catch (emailError) {
+            console.error("Email sending failed:", emailError);
+            return res.status(500).json({
+                success: false,
+                message: "Failed to send OTP. Please try again later.",
+            });
+        }
+
+        // 🔹 SAVE USER ONLY IF EMAIL SENT
+        const createdUser = await UserModel.create({
+            name,
+            email,
+            password,
+            otp: OTP,
+            otpExpiry: Date.now() + 10 * 60 * 1000,
+        });
+
+        return res.status(201).json({
+            success: true,
+            message: "OTP sent successfully",
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: "Server Error",
+            error: error.message,
+        });
     }
-
-    // 🔹 SAVE USER ONLY IF EMAIL SENT
-    const createdUser = await UserModel.create({
-      name,
-      email,
-      password,
-      otp: OTP,
-      otpExpiry: Date.now() + 10 * 60 * 1000,
-    });
-
-    return res.status(201).json({
-      success: true,
-      message: "OTP sent successfully",
-    });
-
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: "Server Error",
-      error: error.message,
-    });
-  }
 };
 
 
