@@ -5,13 +5,7 @@ import { NavLink } from 'react-router-dom'
 const MobileMenu = ({ isOpen, onClose }) => {
     return (
         <div
-            className={`
-        fixed inset-0 z-50 md:hidden
-        bg-[#ED985F]
-        transition-transform duration-300 ease-out min-h-40
-        ${isOpen ? 'translate-y-0' : '-translate-y-full'}
-      `}
-        >
+            className={`fixed inset-0 z-50 md:hidden bg-[#ED985F] transition-transform duration-300 ease-out min-h-40 ${isOpen ? 'translate-y-0' : '-translate-y-full'}`} >
             {/* Close button */}
             <button
                 className="absolute top-2 right-2 p-2 rounded-md hover:bg-gray-200 active:scale-95 transition"
@@ -26,29 +20,15 @@ const MobileMenu = ({ isOpen, onClose }) => {
                 <NavLink
                     to="/"
                     onClick={onClose}
-                    className={({ isActive }) =>
-                        `
-              transition-all duration-300 ease-in
-              hover:underline
-              ${isActive ? 'underline' : ''}
-            `
-                    }
-                >
+                    className={({ isActive }) => `transition-all duration-300 ease-in hover:underline ${isActive ? 'underline' : ''}`}>
                     Home
                 </NavLink>
 
                 <NavLink
-                    to="/add-todo"
+                    to="/create-todo"
                     onClick={onClose}
-                    className={({ isActive }) =>
-                        `
-              transition-all duration-300 ease-in
-              hover:underline
-              ${isActive ? 'underline' : ''}
-            `
-                    }
-                >
-                    Add Todo
+                    className={({ isActive }) => `transition-all duration-300 ease-in hover:underline ${isActive ? 'underline' : ''} `}>
+                    Create Todo
                 </NavLink>
             </nav>
         </div>

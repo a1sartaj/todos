@@ -8,7 +8,7 @@ const PlusButton = () => {
 
     return (
         //  Add Todo Button 
-        <button className="fixed bottom-4 right-4 flex items-center justify-center  " onClick={() => navigate('/add-todo')} >
+        <button className="fixed bottom-4 right-4 flex items-center justify-center  " onClick={() => navigate('/create-todo')} >
             <FaCirclePlus className="text-5xl rounded-full  transition-all duration-300 ease-in   shadow-white hover:text-white hover:shadow-[0_0_20px] cursor-pointer " />
         </button>
 

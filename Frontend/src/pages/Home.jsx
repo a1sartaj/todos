@@ -3,23 +3,25 @@ import { TodoContext } from "../context/TodoContext"
 import { Link, useNavigate } from 'react-router-dom'
 import { RiDeleteBin6Line } from "react-icons/ri";
 import PlusButton from "../components/PlusButton";
+import { formatDate } from "../utils/formatDate";
 
 
 
 const Home = () => {
 
-    const { todos, handleDeleteTodo, } = useContext(TodoContext)
+    const { todos, } = useContext(TodoContext)
 
     const navigate = useNavigate();
 
     return (
         <>
             {/* Todos list */}
-            <div className=" flex flex-col gap-2 p-2   overflow-y-auto ">
+            {/* <div className=" flex flex-col gap-2 p-2   overflow-y-auto h-screen w-full "> */}
+            <div className="flex flex-col gap-2 p-2 w-full">
                 {
                     todos.length === 0 ? (
                         <Link
-                            to='/add-todo'
+                            to='/create-todo'
                             className="flex items-center justify-center w-full h-full cursor-pointer text-center font-medium text-lg  hover:underline  "
                         >No todos yet. Click + to add one.</Link>
                     ) : (
@@ -29,12 +31,12 @@ const Home = () => {
                                 <div className="flex flex-col flex-1  " onClick={() => navigate(`/view-todo/${todo._id}`)}  >
                                     <h3 className="text-lg  " >{todo.title}</h3>
 
-                                    <p className="text-[#9C9696] text-[12px]" >Due : {todo.dueDate}</p>
+                                   {todo.dueDate &&  <p className="text-[#9C9696] text-[12px]" >Due : {formatDate(todo.dueDate)}</p>}
                                 </div>
 
-                                {/* Delete Button */}
+                                {/* Done Button */}
                                 <button className="flex items-center justify-center gap-1 px-6 py-2 text-[#E6E6E6] text-lg bg-red-500 rounded-lg transition-all ease-in shadow-white  hover:bg-white hover:text-black hover:shadow-[0_0_10px]  cursor-pointer"
-                                    onClick={() => handleDeleteTodo(todo._id)} > <RiDeleteBin6Line /> Delete</button>
+                                > <RiDeleteBin6Line /> Done</button>
                             </div>
                         ))
                     )

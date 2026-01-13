@@ -1,62 +1,31 @@
+import axios from "axios";
 import { useContext, useEffect, useState } from "react";
-import { TodoContext } from "../context/TodoContext";
-import { IoMdArrowRoundBack } from "react-icons/io";
-import { useNavigate, useParams } from 'react-router-dom';
 import toast from "react-hot-toast";
 import axiosInstance from "../utils/axiosInstance";
-import { formatDate } from "../utils/formatDate";
+import Loading from "../components/Loading";
+import { TodoContext } from "../context/TodoContext";
 
+const CreateTodoPage = () => {
 
-const EditTodo = () => {
-
-    const todoId = useParams().id;
-    const navigate = useNavigate();
-    const { todos, setTodos } = useContext(TodoContext)
-    const [todoInput, setTodoInput] = useState({
+    const [todoInput, setTodoInput] = useState(sessionStorage.getItem('todoInputDraft') ? JSON.parse(sessionStorage.getItem('todoInputDraft')) : {
         title: "",
         description: "",
         dueDate: "",
     });
-    const [loading, setLoading] = useState(false)
 
+    const [loading, setLoading] = useState(false);
+    const { todos, setTodos } = useContext(TodoContext)
+
+
+
+    // Handle input change
     const handleOnChange = (e) => {
         const { name, value } = e.target;
-        setTodoInput(prev => ({ ...prev, [name]: value }))
-    }
+        setTodoInput((prev) => ({ ...prev, [name]: value }));
+    };
 
-    const fetchedTodo = async () => {
-        const foundTodo = todos.find(todo => todo._id.toString() === todoId.toString);
-        if (foundTodo) {
-            setTodoInput({
-                title: foundTodo.title,
-                description: foundTodo.description,
-                dueDate: formatDate(foundTodo.dueDate)
-            })
-            return;
-        }
-
-        try {
-            setLoading(true)
-
-            const response = await axiosInstance.get(`/api/todos/get-single-todo/${todoId}`)
-
-            if (response.data.success) {
-                const foundTodo = response.data.todo;
-                setTodoInput({
-                    title: foundTodo.title,
-                    description: foundTodo.description,
-                    dueDate: formatDate(foundTodo.dueDate)
-                })
-            }
-
-        } catch (error) {
-            toast.error(error.message)
-        } finally {
-            setLoading(false)
-        }
-    }
-
-    const handleUpdateTodo = async (e) => {
+    // Handle submit
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (!todoInput.title.trim()) {
@@ -74,52 +43,45 @@ const EditTodo = () => {
         try {
             setLoading(true)
 
-            const response = await axiosInstance.put(`/api/todos/update-todo/${todoId}`, todoInput)
+            const response = await axiosInstance.post(`/api/todos/create-todo`, todoInput,)
+
             if (response.data.success) {
                 toast.success(response.data.message);
-
-                // Todo Update in Local
-                const updateTodo = todos.map((todo) => {
-                    if (todo._id.toString() === todoId.toString()) {
-                        return response.data.todo
-                    }
-
-                    return todo
-                })
-                setTodos(updateTodo)
-                navigate(`/view-todo/${todoId}`)
-
-                // setTodos((prev) => prev.map(todo => todo._id.toString() === todoId.toString() ? response.data.todo : todo) )
-            } else {
-                toast.error(response.data.message);
+                setTodos([...todos, response.data.todo])
+                setTodoInput({
+                    title: "",
+                    description: "",
+                    dueDate: "",
+                });
             }
-
         } catch (error) {
             const errorMessage = error.response?.data?.message || "Something went wrong";
             toast.error(errorMessage);
         } finally {
             setLoading(false)
         }
-    }
+    };
 
+    // Har text to session storage me store karta hai jo tab ya app close hone par clear ho jata hai
     useEffect(() => {
-        fetchedTodo();
-    }, [])
+        sessionStorage.setItem('todoInputDraft', JSON.stringify(todoInput))
+    }, [todoInput])
 
-
-
+    
     return (
-
         <form
-            className=" flex flex-col items-center gap-6 w-full max-w-lg mx-2 py-24 px-4 bg-[#F7B980] rounded-lg"
-            onSubmit={handleUpdateTodo}
+            onSubmit={handleSubmit}
+            className="flex flex-col items-center gap-6 w-full max-w-lg mx-2 py-24 px-4 bg-[#F7B980] rounded-lg"
         >
+
+
+            {loading && <Loading />}
+
             {/* Heading */}
             <h2 className="text-3xl font-medium text-black">
-                Update a Todo
+                Create a Todo
             </h2>
 
-            {/* Title Box */}
             {/* Title */}
             <input
                 type="text"
@@ -170,8 +132,7 @@ const EditTodo = () => {
                 Add Todo
             </button>
         </form>
+    );
+};
 
-    )
-}
-
-export default EditTodo;
+export default CreateTodoPage;
