@@ -6,57 +6,66 @@ import { generateToken } from "../utils/generateToken.js";
 
 // Create New User Controller
 export const createUser = async (req, res) => {
+  const { name, email, password } = req.body;
 
-    // console.log("Create User Called");
+  if (!name || !email || !password) {
+    return res.status(400).json({ success: false, message: "All fields are required" });
+  }
 
-    const { name, email, password } = req.body;
+  if (!email.includes("@")) {
+    return res.status(400).json({ success: false, message: "Invalid email address" });
+  }
 
-    if (!name || !email || !password) {
-        return res.status(400).json({ success: false, message: "All fields are required" });
+  try {
+    const existingUser = await UserModel.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ success: false, message: "User with this email already exists" });
     }
 
-    if (!email.includes('@')) {
-        return res.status(400).json({ success: false, message: "Invalid email address" })
-    }
+    // Generate OTP
+    const OTP = Math.floor(100000 + Math.random() * 900000);
 
+    // 🔹 SEND EMAIL FIRST
     try {
+      await transporter.sendMail({
+        from: process.env.EMAIL_USER,
+        to: email,
+        subject: "Your OTP Code",
+        text: `Your OTP code is ${OTP}. It is valid for 10 minutes.`,
+      });
 
-        const existingUser = await UserModel.findOne({ email })
-        if (existingUser) {
-            return res.status(400).json({ success: false, message: "User with this email already exists" });
-        }
-
-
-        const OTP = Math.floor(100000 + Math.random() * 900000)
-
-        const newUser = {
-            name,
-            email,
-            password,
-            otp: OTP,
-            otpExpiry: Date.now() + 10 * 60 * 1000 // 10 minutes * 60 seconds * 1000 milliseconds
-        }
-
-        const createdUser = await UserModel.create(newUser);
-
-
-        // Send OTP via Email Service with nodemailer
-        await transporter.sendMail({
-            from: process.env.EMAIL_USER,
-            to: email,
-            subject: "Your OTP Code",
-            text: `Your OTP code is ${OTP}. It is valid for 10 minutes.`
-        })
-
-        console.log("OTP sent to email:", email);
-
-        return res.status(201).json({ success: true, message: "OTP sent successfully", user: createdUser });
-
-    } catch (error) {
-        return res.status(500).json({ success: false, message: "Server Error", error: error.message });
+      console.log("OTP email sent to:", email);
+    } catch (emailError) {
+      console.error("Email sending failed:", emailError);
+      return res.status(500).json({
+        success: false,
+        message: "Failed to send OTP. Please try again later.",
+      });
     }
 
-}
+    // 🔹 SAVE USER ONLY IF EMAIL SENT
+    const createdUser = await UserModel.create({
+      name,
+      email,
+      password,
+      otp: OTP,
+      otpExpiry: Date.now() + 10 * 60 * 1000,
+    });
+
+    return res.status(201).json({
+      success: true,
+      message: "OTP sent successfully",
+    });
+
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Server Error",
+      error: error.message,
+    });
+  }
+};
+
 
 // Varify OTP Controller
 export const verifyOTP = async (req, res) => {
