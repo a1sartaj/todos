@@ -143,7 +143,7 @@ export const resendOTP = async (req, res) => {
         await user.save();
 
         await transporter.sendMail({
-            from: process.env.EMAIL_USER,
+            from: `"Todo App" <no-reply@a1sartaj.in>`,
             to: email,
             subject: "Your New OTP Code",
             text: `Your new OTP code is ${OTP}. It is valid for 10 minutes.`
