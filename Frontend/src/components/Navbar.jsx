@@ -19,7 +19,10 @@ const Navbar = () => {
         <div className='flex items-center justify-between h-[54px] md:h-16 max-w-[1440px] mx-1 xl:mx-auto transition-all duration-300 ease-in' >
 
             {/* Logo */}
-            <h2 className='kavoon text-lg md:text-2xl transition-all duration-300 ease-in ' >To-do a1Sartaj</h2>
+            <div className='flex items-center gap-1' >
+                <img className='w-8 h-8' src="/logo.svg" alt="" />
+                <h2 className='kavoon text-lg md:text-2xl transition-all duration-300 ease-in ' >To-do a1Sartaj</h2>
+            </div>
 
             {/* Nav link */}
             <nav className='flex gap-16 text-lg' >
