@@ -1,9 +1,9 @@
 # 📝 Todo App (MERN Stack)
-A full-stack Todo Application built using the MERN Stack with secure authentication, OTP verification, and role-based protected routes.
+A full-stack **Todo Application** built using the **MERN Stack** with secure authentication, OTP verification, and role-based protected routes.
 Users can create, view, update, and delete todos with deadlines and completion status.
 
 ## 😒 What Problem does it solve?
-There are so many people who forget that what all I have to do. That's why I created a To-do Application Where people can add their task and wherever they will have time then they can completed their task.
+There are so many people who forget that what all I have to do. That's why I created a **To-do Application** Where people can add their task and wherever they will have time then they can completed their task.
 
 ## 🚀 Features
 ###  🔐 Authentication & Security
@@ -89,9 +89,9 @@ backend/
 ## 🔑 Environment Variables
 
 ### 🖥 Frontend (`.env`)
-`
+```
 VITE_BACKEND_URL=https://your-backend-url.com
-`
+```
 
 
 
@@ -150,7 +150,7 @@ NODE_ENV=production
 ### Sartaj Alam
 - GitHub : https://github.com/a1Sartaj
 - LinkedIn : https://linkedin.com/in/a1sartaj
-- Portfolio : https://a1.sartaj.in
+- Portfolio : https://a1sartaj.in
 
 ## ⭐ Future Improvements
 - Drag & drop todos
