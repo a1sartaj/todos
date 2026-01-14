@@ -96,11 +96,12 @@ VITE_BACKEND_URL=https://your-backend-url.com
 
 
 ### 🧠 Backend (`.env`)
-`PORT=3000
+```
+PORT=3000
 MONGO_URI=your_mongodb_url
 JWT_SECRET=your_secret_key
 NODE_ENV=production
-`
+```
 
 ## 🔄 API Overview
 
