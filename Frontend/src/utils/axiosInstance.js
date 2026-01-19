@@ -16,7 +16,7 @@ axiosInstance.interceptors.response.use(
         if (error.response?.status === 401) {
             // Cookies Expired
             // window.location.href = '/login';
-            window.dispatchEvent(new Event('auth-logout'))
+            window.dispatchEvent(new Event('auth-logout')) // more detail in authContex.jsx
         }
 
         return Promise.reject(error) // Without this catch block will not run in my code that'why I couldn't run toast notificaiton that's why I need to write this.

@@ -8,6 +8,7 @@ There are so many people who forget that what all I have to do. That's why I cre
 ## 🚀 Features
 ###  🔐 Authentication & Security
 - User Registration & Login
+- User forget their password
 - OTP verification via Email
 - JWT Authentication with HTTP-Only Cookies
 - Protected Routes (Frontend & Backend)
@@ -15,7 +16,7 @@ There are so many people who forget that what all I have to do. That's why I cre
 
 ### ✅ Todo Management
 - Create Todo with title, description & due date
-- View all todos (latest first)
+- View all todos (due date first)
 - View single todo details
 - Edit existing todo
 - Delete todo
@@ -82,6 +83,7 @@ backend/
 ├── routes/
 ├── middleware/
 ├── config/
+|-- utils/
 ├── index.js
 └── .env
 ```
@@ -101,23 +103,29 @@ PORT=3000
 MONGO_URI=your_mongodb_url
 JWT_SECRET=your_secret_key
 NODE_ENV=production
+BREVO_API_KEY=your-brevo-api-key
+BREVO_SMTP_USER=your-brevo-smtp-user
+BREVO_SMTP_KEY=your-brevo-smtp-key
 ```
 
 ## 🔄 API Overview
 
 ### Auth Routes
-- `POST /api/auth/register`
-- `POST /api/auth/login`
+- `POST /api/auth/create-user`
+- `POST /api/auth/login-user`
 - `GET /api/auth/me`
 - `POST /api/auth/verify-otp`
+- `POST /api/auth/resend-otp`
+- `POST /api/auth/forget-password`
+- `POST /api/auth/reset-password`
 
 ### Todo Routes
-- `POST /api/todos`
-- `GET /api/todos`
-- `GET /api/todos/:id`
-- `PATCH /api/todos/:id/completed`
-- `PUT /api/todos/:id`
-- `DELETE /api/todos/:id`
+- `POST /api/create-todo`
+- `GET /api/get-all-todos`
+- `GET /api/get-single-todo/:id`
+- `PATCH /api/todo-status-update/:id`
+- `PUT /api/update-todo/:id`
+- `DELETE /api/delete/:id`
 
 ## 🔒 Route Protection Logic
 - Unauthorized user are redirect to Login
@@ -125,6 +133,12 @@ NODE_ENV=production
 - User is redirected back to the page they came from after login
 
 ## 🧪 How to Run Locally
+
+### 🧑‍💻 Open terminal and paste it
+
+```
+ git clone https://github.com/a1sartaj/todos.git
+```
 
 ### 🧠 Backend
 ```
@@ -136,15 +150,16 @@ NODE_ENV=production
 ### 🖥 Frontend
 
 ```
+    cd Frontend
     npm install
     npm run dev 
 ```
 
 ## 🌍 Deployment
 
-- **Frontend** : Vercel
-- **Backend** : Render
-- **Database** : MongoDB Atlas
+- **Frontend** : VPS server
+- **Backend** : VPS server
+- **Database** : VPS server
 
 ## 🧑‍💻 Author
 ### Sartaj Alam

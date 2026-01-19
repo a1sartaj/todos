@@ -15,11 +15,9 @@ export const sendOTPEmail = async (to, otp) => {
                     },
                 ],
                 subject: "Your OTP Code",
-                htmlContent: `
-          <h2>Your OTP Code</h2>
-          <p>Your OTP is <b>${otp}</b></p>
-          <p>Valid for 10 minutes.</p>
-        `,
+                htmlContent: `<h2>Your OTP Code</h2>
+                              <p>Your OTP is <b>${otp}</b></p>
+                               <p>Valid for 10 minutes.</p>`,
             },
             {
                 headers: {

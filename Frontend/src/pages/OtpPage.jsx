@@ -104,7 +104,7 @@ const OtpPage = () => {
             setTimeLeft((prevTime) => prevTime - 1);
         }, 1000)
 
-        return () => clearInterval(timer);
+        return () => clearInterval(timer); 
 
     }, [timeLeft])
 
