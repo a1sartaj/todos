@@ -57,6 +57,10 @@ const Login = () => {
     } catch (error) {
       const errorMessage = error.response?.data?.message || "Something went wrong";
       toast.error(errorMessage)
+      console.log(error.status)
+      if(error.status === 404) {
+        navigate('/register')
+      }
     } finally {
       setLoading(false);
     }

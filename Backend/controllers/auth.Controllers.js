@@ -8,6 +8,7 @@ import { sendOTPEmail } from "../utils/sendEmail.js";
 export const createUser = async (req, res) => {
     const { name, email, password } = req.body;
 
+
     if (!name || !email || !password) {
         return res.status(400).json({ success: false, message: "All fields are required" });
     }
@@ -17,27 +18,25 @@ export const createUser = async (req, res) => {
     }
 
     try {
-        const existingUser = await UserModel.findOne({ email });
-        if (existingUser) {
+        const user = await UserModel.findOne({ email });
+        if (user && user.isVerified) {
             return res.status(400).json({ success: false, message: "User with this email already exists" });
+        }
+
+        // User exists but not verify
+        if (user && !user.isVerified) {
+            if (user.otpExpiry > Date.now()) {
+                return res.status(200).json({ success: true, message: "OTP already sent" });
+            }
+            return await resendOTP(req, res)
         }
 
         // Generate OTP
         const OTP = Math.floor(100000 + Math.random() * 900000);
 
-        // 🔹 SEND EMAIL FIRST
+        // SEND EMAIL FIRST
         try {
-            // await transporter.sendMail({
-
-            //     from: `"Todo App" <no-reply@a1sartaj.in>`,
-            //     to: email,
-            //     subject: "Your OTP Code",
-            //     text: `Your OTP code is ${OTP}. It is valid for 10 minutes.`,
-            // });
-
             await sendOTPEmail(email, OTP)
-
-            console.log("OTP email sent to:", email);
         } catch (emailError) {
             console.error("Email sending failed:", emailError);
             return res.status(500).json({
@@ -45,6 +44,7 @@ export const createUser = async (req, res) => {
                 message: "Failed to send OTP. Please try again later.",
             });
         }
+
 
         // 🔹 SAVE USER ONLY IF EMAIL SENT
         const createdUser = await UserModel.create({
@@ -55,17 +55,11 @@ export const createUser = async (req, res) => {
             otpExpiry: Date.now() + 10 * 60 * 1000,
         });
 
-        return res.status(201).json({
-            success: true,
-            message: "OTP sent successfully",
-        });
+        return res.status(201).json({ success: true, message: "OTP sent successfully", });
 
     } catch (error) {
-        return res.status(500).json({
-            success: false,
-            message: "Server Error",
-            error: error.message,
-        });
+        console.log(error)
+        return res.status(500).json({ success: false, message: "Server Error", error: error.message, });
     }
 }
 
@@ -130,7 +124,7 @@ export const resendOTP = async (req, res) => {
         const user = await UserModel.findOne({ email });
 
         if (!user) {
-            return res.status(400).json({ success: false, message: "User not found" });
+            return res.status(404).json({ success: false, message: "User not found" });
         }
 
         if (user.isVerified) {
@@ -138,15 +132,6 @@ export const resendOTP = async (req, res) => {
         }
 
         const OTP = Math.floor(100000 + Math.random() * 900000);
-
-
-
-        // await transporter.sendMail({
-        //     from: `"Todo App" <no-reply@a1sartaj.in>`,
-        //     to: email,
-        //     subject: "Your New OTP Code",
-        //     text: `Your new OTP code is ${OTP}. It is valid for 10 minutes.`
-        // })
 
         try {
             await sendOTPEmail(email, OTP)
