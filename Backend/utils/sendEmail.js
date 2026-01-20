@@ -1,6 +1,12 @@
 import axios from "axios";
 
 export const sendOTPEmail = async (to, otp) => {
+
+    // Because I don't want to send otp in developement phase
+    if (process.env.NODE_ENV === 'development') {
+        return
+    }
+
     try {
         await axios.post(
             "https://api.brevo.com/v3/smtp/email",

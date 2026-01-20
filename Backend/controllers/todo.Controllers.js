@@ -49,7 +49,7 @@ export const getAllTodos = async (req, res) => {
 
     try {
 
-        const todos = await TodoModel.find({ userId }).sort({ createdAt: -1 }) // latest first
+        const todos = await TodoModel.find({ userId }).sort({ dueDate: 1 }) // Closest date first
 
         return res.status(200).json({ success: true, message: 'Todo fetch successfully', todos })
 
