@@ -129,6 +129,7 @@ const ViewTodo = () => {
             <div className='w-full' >
                 {/* Title and mark completed toggle */}
                 <div className='flex item-start gap-2  px-2 pb-2 mb-2 border-b' >
+                    {/* Title */}
                     <h2 className=' flex-1 text-2xl font-medium ' >{todo.title}</h2>
 
                     {/* Toggle Button Content*/}
@@ -142,7 +143,10 @@ const ViewTodo = () => {
                     </div>
                 </div>
 
-                <p className='px-2 mb-4 text-lg  text-gray-700 leading-6' >{todo.description}</p>
+                {/* Description */}
+                {todo.description && <p className='px-2 mb-4 text-lg  text-gray-700 leading-6' >{todo.description}</p>}
+
+                {/* Due Date */}
                 {todo.dueDate && <p className='px-2 text-xs text-gray-400'>Due Date : {formatDate(todo.dueDate)}</p>}
 
                 {/* Buttons Section */}

@@ -12,7 +12,7 @@ There are so many people who forget that what all I have to do. That's why I cre
 - OTP verification via Email
 - JWT Authentication with HTTP-Only Cookies
 - Protected Routes (Frontend & Backend)
-- Auto logout on token expiry
+- logout and Auto logout on token expiry
 
 ### ✅ Todo Management
 - Create Todo with title, description & due date

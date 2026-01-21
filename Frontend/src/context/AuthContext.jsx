@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import axiosInstance from "../utils/axiosInstance";
 import { useLocation, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 export const AuthContext = createContext();
 
@@ -25,6 +26,19 @@ const AuthProvider = ({ children }) => {
         }
     };
 
+
+    const logout = async () => {
+        try {
+            const response = await axiosInstance.post('/api/auth/logout')
+
+            toast.success(response.data.message)
+            setUser(null)
+        } catch (error) {
+            const errorMessage = error.response?.data?.message || 'Failed to logged out'
+            toast.error(errorMessage)
+        }
+    }
+
     useEffect(() => {
         fetchUser();
     }, []);
@@ -44,7 +58,7 @@ const AuthProvider = ({ children }) => {
     }, [navigate, location.pathname])
 
     return (
-        <AuthContext.Provider value={{ user, loading, fetchUser }}>
+        <AuthContext.Provider value={{ user, loading, fetchUser, logout }}>
             {children}
         </AuthContext.Provider>
     );

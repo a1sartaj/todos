@@ -1,5 +1,5 @@
 import express from 'express';
-import { createUser, forgetPassword, getMe, LoginUser, resendOTP, resetPassword, verifyOTP } from '../controllers/auth.Controllers.js';
+import { createUser, forgetPassword, getMe, LoginUser, logout, resendOTP, resetPassword, verifyOTP } from '../controllers/auth.Controllers.js';
 import { authMiddleware } from '../middlewares/auth.Middleware.js';
 
 
@@ -12,6 +12,7 @@ authRouter.post('/resend-otp', resendOTP);
 authRouter.post('/login-user', LoginUser);
 authRouter.post('/forget-password', forgetPassword)
 authRouter.post('/reset-password', resetPassword)
+authRouter.post('/logout', logout)
 
 export default authRouter;
 

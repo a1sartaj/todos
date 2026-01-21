@@ -302,3 +302,26 @@ export const resetPassword = async (req, res) => {
     }
 }
 
+// Logout User 
+export const logout = async (req, res) => {
+
+    try {
+        res.cookie('token', '', {
+            httpOnly: true,
+
+            // we need secure false in local and secure true for server
+            secure: process.env.NODE_ENV === 'production',
+
+            // we need sameSite lax for local and sameSite none for server
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+            path: '/',
+            expires: new Date(0)
+        })
+
+        return res.status(200).json({ success: true, message: 'Logged out successfully' })
+    } catch (error) {
+        return res.status(500).json({ success: false, message: 'Failed to logged out' })
+    }
+
+}
+

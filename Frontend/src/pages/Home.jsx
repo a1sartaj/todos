@@ -31,12 +31,12 @@ const Home = () => {
                                 <div className="flex flex-col flex-1  " onClick={() => navigate(`/view-todo/${todo._id}`)}  >
                                     <h3 className="text-lg  " >{todo.title}</h3>
 
-                                   {todo.dueDate &&  <p className="text-[#9C9696] text-[12px]" >Due : {formatDate(todo.dueDate)}</p>}
+                                    {todo.dueDate && <p className="text-[#9C9696] text-[12px]" >Due : {formatDate(todo.dueDate)}</p>}
                                 </div>
 
                                 {/* Done Button */}
-                                <button className="flex items-center justify-center gap-1 px-6 py-2 text-[#E6E6E6] text-lg bg-red-500 rounded-lg transition-all ease-in shadow-white  hover:bg-white hover:text-black hover:shadow-[0_0_10px]  cursor-pointer"
-                                > <RiDeleteBin6Line /> Done</button>
+                                {/* <button className="flex items-center justify-center gap-1 px-6 py-2 text-[#E6E6E6] text-lg bg-red-500 rounded-lg transition-all ease-in shadow-white  hover:bg-white hover:text-black hover:shadow-[0_0_10px]  cursor-pointer"
+                                > <RiDeleteBin6Line /> Done</button> */}
                             </div>
                         ))
                     )

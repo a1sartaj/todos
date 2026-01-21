@@ -1,14 +1,17 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { FaBars } from "react-icons/fa";
 import { FaXmark } from 'react-icons/fa6';
 import MobileMenu from './MobileMenu';
+import { AuthContext } from '../context/AuthContext';
+import UserDropdown from './UserDropdown';
 
 const Navbar = () => {
 
     const navigate = useNavigate();
+    const { user, logout } = useContext(AuthContext)
 
-    const [open, setOpen] = useState(false)
+    const [open, setOpen] = useState(false)    
 
     const onClose = () => {
         setOpen(false)
@@ -40,8 +43,15 @@ const Navbar = () => {
 
             {/* Button and hamburger bar */}
             <div className='flex items-center justify-between gap-2' >
-                <button className='px-6  py-2 text-white bg-[#FB2C36] rounded-lg transition-all duration-300 ease-in cursor-pointer hover:text-black hover:bg-white shadow-white hover:shadow-[0_0_10px] ' onClick={() => navigate('/login')} >Login</button>
+                {user ? (
+                    // <UserDropdown props={{ logout, user }} />
+                    <UserDropdown user={user} onLogout={logout} />
+                ) : (
+                    <button className='px-6  py-2 text-white bg-[#FB2C36] rounded-lg transition-all duration-300 ease-in cursor-pointer hover:text-black hover:bg-white shadow-white hover:shadow-[0_0_10px] ' onClick={() => navigate('/login')} >Login</button>
+                )}
 
+
+                {/* Hamburger bars */}
                 <button
                     aria-label="Open menu"
                     className="md:hidden p-2 rounded-md hover:bg-gray-200 active:scale-95 transition "
